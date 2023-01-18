@@ -1,0 +1,71 @@
+a{
+    text-decoration: none;
+}
+
+#border {
+    border-radius: 30px;
+    border: 2px solid white;
+    padding: 60px;
+    /* width: 500px; */
+}
+
+#border button {
+    border-radius: 15px;
+    border: 2px solid rgb(211, 72, 72);
+    background-color: rgb(213, 84, 67) !important;
+    justify-self: center !important;
+    padding: 10px 0;
+    width: 200px !important;
+}
+
+#btnAddTask {
+    background-color: rgb(213, 84, 67) !important;
+    border: 1px solid black !important;
+    height: 50px !important;
+    padding: 0 20px !important;
+}
+
+
+#counter {
+    background-color: rgb(224, 117, 102);
+}
+
+#footer {
+    background-color: rgb(213, 84, 67);
+    color: white;
+    font-family: 'Courgette', cursive;
+}
+
+h1 {
+    font-size: 80px !important;
+    color: white;
+}
+
+#header {
+    background-color: rgb(213, 84, 67);
+    color: white;
+    font-family: 'Courgette', cursive;
+}
+
+input {
+    border: 1px solid black !important;
+    width: 260px !important;
+    height: 50px !important;
+}
+
+p {
+    color: white;
+}
+
+#search {
+    background-image: url('./assets/tomatoe.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-top: 10px solid rgb(213, 84, 67);
+    object-fit: cover;
+    min-height: 40vh;
+}
+
+#search::before {
+    opacity: 0.6 !important;
+}

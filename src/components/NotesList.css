@@ -1,0 +1,11 @@
+.card {
+    background-color: rgba(224, 116, 102, 0.895);
+    border: 1px solid rgb(65, 65, 65);
+    color: white;
+    font-size: large;
+}
+
+.strike {
+    text-decoration: 2px line-through rgb(84, 84, 84);
+    
+}
