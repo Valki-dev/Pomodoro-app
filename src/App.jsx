@@ -196,7 +196,7 @@ function App() {
         <div className="row" id='footer'>
             <div className="col-12 col-lg-12 mt-2 d-flex justify-content-center">
               <div className='d-flex flex-column'>
-                <a href="">
+                <a href="https://github.com/Valki-dev">
                   <img src={Logo} alt="Logo no disponible" width={80}/>
                   <p className='text-center'>Valki_dev</p>
                 </a>
