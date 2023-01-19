@@ -11,7 +11,7 @@ function App() {
   const [pomodoroCounter, setPomodoroCounter] = useState(0);
   const [activated, setActivated] = useState(false);
   const [counterPaused, setCounterPaused] = useState({minutes: 25, seconds: 0, paused: true, interval: -1});
-  const [newTask, setNewTask] = useState('');
+  const [newDescription, setNewDescription] = useState("");
   const [tasks, setTasks] = useState([]);
 
   let ids = [];
@@ -20,7 +20,7 @@ function App() {
     if (activated) {
       setCounterPaused({...counterPaused, paused: false})
 
-      const interval = setInterval(() => setCounterSeconds(counterSeconds - 1), 10);
+      const interval = setInterval(() => setCounterSeconds(counterSeconds - 1), 1000);
       setCounterPaused({...counterPaused, interval: interval});
       let numberOfPomodoros = pomodoroCounter;
       let isActivated = activated;
@@ -32,35 +32,42 @@ function App() {
         clearInterval(interval);
         isActivated = false;
         numberOfPomodoros++;
-        setCounterPaused({...counterPaused, paused: true})
-        let answer = confirm("¿Descansamos?")
-        if (answer && ((numberOfPomodoros) % 4 == 0)) {
-          type.pomodoro = false;
-          type.longBreak = true;
-          type.shortBreak = false;
+        setCounterPaused({...counterPaused, paused: true});
+        Swal.fire({
+          title: '¿Descansamos?',
+          showDenyButton: true,
+          showCancelButton: false,
+          confirmButtonText: 'Aceptar',
+          denyButtonText: `Cancelar`,
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if ((result.isConfirmed) && (numberOfPomodoros % 4 == 0)) {
+            type.pomodoro = false;
+            type.longBreak = true;
+            type.shortBreak = false;
 
-          minutes = 15;
-          seconds = 0;
-          
-        } else if (answer) {
-          type.pomodoro = false;
-          type.longBreak = false;
-          type.shortBreak = true;
+            minutes = 15;
+            seconds = 0;
+          } else if (result.isConfirmed) {
+            type.pomodoro = false;
+            type.longBreak = false;
+            type.shortBreak = true;
 
-          minutes = 5;
-          seconds = 0;
-        } else {
-          type.pomodoro = true;
-          type.longBreak = false;
-          type.shortBreak = false;
+            minutes = 5;
+            seconds = 0;
+          } else {
+            type.pomodoro = true;
+            type.longBreak = false;
+            type.shortBreak = false;
 
-          minutes = 25;
-          seconds = 0;
-        }
+            minutes = 25;
+            seconds = 0;
+          }
+        })
       } else if ((typeOfCounter.shortBreak || typeOfCounter.longBreak) && (counterMinutes == 0) && (counterSeconds == 0)) {
+        Swal.fire('¡Se acabó el descanso!')
         clearInterval(interval);
         isActivated = false;
-
         type.pomodoro = true;
         type.shortBreak = false;
         type.longBreak = false;
@@ -113,11 +120,6 @@ function App() {
     
     setCounterSeconds(seconds);
     setCounterMinutes(minutes);
-    
-
-    // let btnStart = document.querySelector('#btnStart');
-    // btnStart.classList.add('disabled')
-    // console.log(btnStart);
   }
 
   const handleSetCounterPaused = () => {
@@ -127,20 +129,21 @@ function App() {
     setActivated(false);
   }
 
-  const handleSetNewTask = (event) => {
-    let task = event.target.value;
-    setNewTask(task);
+  const handleSetNewDescription = (event) => {
+    let description = event.target.value;
+    setNewDescription(description);
   }
 
   const handleSetTasks = (event) => {
     event.preventDefault();
 
-    if(newTask.trim() != "") {
+    if(newDescription.trim() != "") {
       let tasksCopy = [...tasks];
       let id = generateId()
       let task = {
         id: id,
-        description: newTask
+        description: newDescription,
+        completed: false
       }
       tasksCopy.push(task);
       setTasks(tasksCopy);
@@ -169,7 +172,7 @@ function App() {
         <div className="row" id='counter'>
           <div className="col-12 col-lg-12 mt-4 mb-4 d-flex justify-content-center">
             <div className='d-flex flex-column' id='border'>
-              <h1 className='text-center'>{counterMinutes < 10 ? `0${counterMinutes}` : counterMinutes}:{counterSeconds < 10 ? `0${counterSeconds}` : counterSeconds}</h1>
+              <h1 className='text-center'>{(counterMinutes < 10) ? `0${counterMinutes}` : counterMinutes}:{counterSeconds < 10 ? `0${counterSeconds}` : counterSeconds}</h1>
               <p className='text-center'>Pomodoros: {pomodoroCounter}</p>
                 {counterPaused.paused ? <button className='btn btn-danger mt-3' onClick={handleSetPomodoro} id="btnStart">Iniciar</button> : <button className='btn btn-danger mt-3' onClick={handleSetCounterPaused} id="btnStart">Pausar</button>}
                 {/* <button className='btn btn-danger mt-3' onClick={handleSetPomodoro} id="btnStart">Iniciar</button> */}
@@ -178,11 +181,11 @@ function App() {
         </div>
 
         <div className="row" id='search'>
-          <div className="col-12 col-lg-12 mt-5 d-flex justify-content-center" >
+          <div className="col-12 col-lg-12 mt-5 d-flex justify-content-center">
             <div className='d-flex'>
               <div className="input-group">
                 <form className='form d-flex justify-content-center'>
-                  <input type="text" className="form-control" placeholder="Añadir una tarea..." aria-label="Añadir una tarea..." aria-describedby="btnAddTask" value={newTask} onChange={handleSetNewTask} />
+                  <input type="text" className="form-control" placeholder="Añadir una tarea..." aria-label="Añadir una tarea..." aria-describedby="btnAddTask" value={newDescription} onChange={handleSetNewDescription} />
                   <button className="btn btn-danger" type="submit" id="btnAddTask" onClick={handleSetTasks} ><b>+</b></button>
                 </form>
               </div>
@@ -208,4 +211,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

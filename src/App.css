@@ -63,7 +63,7 @@ p {
     background-repeat: no-repeat;
     border-top: 10px solid rgb(213, 84, 67);
     object-fit: cover;
-    min-height: 40vh;
+    min-height: 39.5vh;
 }
 
 #search::before {
